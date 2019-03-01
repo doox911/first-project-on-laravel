@@ -5,50 +5,56 @@
 
 
 <div class="container">
-    <div class="row"></div>
-
     <div class="row">
         <div class="col">
 
             @foreach ($tasks as $id => $task)
 
             <div class="jumbotron pb-1">
-                <h1 class="display-5">{{ $task->title }}</h1>
+                <h1 class="display-5"><a href="{{ URL::to('task', $task->id ) }}" class="text-muted">{{ $task->title }}</a></h1>
                 <hr class="my-4">
                 <p class="lead">{{ $task->body }}</p>
                 <hr class="my-4">
                 <div class="row mb-3">
-                    <div class="col-md-3">
-                        <b>Постановщик:&nbsp;&nbsp;</b>
-                        <span class="bg-success text-white p-1 rounded">{{ $task->setter_name }} {{ $task->setter_second_name }}</span>
-                    </div>
-                    <div class="col-md-3">
-                        <b>Ответственый:&nbsp;&nbsp;</b>
-                        <span class="bg-success text-white p-1 rounded">{{ $task->responsible_name }} {{ $task->responsible_second_name }}</span>
-                    </div>
-                    <div class="col-md-3">
-                        <b>Создана:&nbsp;&nbsp;</b>
-                        <span class="bg-info text-white p-1 rounded">{{ $task->created_at }}</span>
-                    </div>
-                    <div class="col-md-3">
-                        <b>Deadline:&nbsp;&nbsp;</b>
-                        <span class="bg-danger text-white p-1 rounded">{{ !empty($task->deadline) ? $task->deadline : 'Не установлено'}}</span>
+                    <div class="">
+                        <b class="badge">Постановщик:&nbsp;&nbsp;</b>
+                        <span class="badge badge-secondary">{{ $task->setter_name }} {{ $task->setter_second_name }}</span>
+                        <b class="badge">Ответственый:&nbsp;&nbsp;</b>
+                        <span class="badge badge-secondary">{{ $task->responsible_name }} {{ $task->responsible_second_name }}</span>
+                        <b class="badge">Создана:&nbsp;&nbsp;</b>
+                        <span class="badge badge-info">{{ $task->created_at }}</span>
+                        <b class="badge">Статус:&nbsp;&nbsp;</b>
+                        <span class="badge badge-danger">{{ !empty($task->status) ? $task->status : 'Не установлено'}}</span>
+                        <b class="badge">Deadline:&nbsp;&nbsp;</b>
+                        <span class="badge badge-danger">{{ !empty($task->deadline) ? $task->deadline : 'Не установлено'}}</span>
                     </div>
                 </div>
                 <p>
 
+                <div class="d-flex justify-content-end pt-3 pb-3">
+                    <a class="btn btn-secondary mr-2" href="{{ URL::to('task', $task->id ) . '/edit'}}" role="button">Изменить</a>
+                    <a class="btn btn-danger text-white delete-task" role="button" data-task="{{ $task->id }}">Удалить</a>
+                </div>
 
-                <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+
             </div>
 
             @endforeach
 
-
         </div>
     </div>
-
-
-    <div class="row"></div>
+</div>
+<div class="container">
+    <hr>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="d-flex justify-content-center">
+                {{ $pagination }}
+            </div>
+        </div>
+    </div>
 </div>
 
 @endsection

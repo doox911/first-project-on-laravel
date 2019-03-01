@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+const LIMIT = 3;
+
 use Illuminate\Http\Request;
 use App\User;
 use App\TaskProperties;
@@ -25,21 +27,10 @@ class TaskController extends Controller
      */
     public function index() {
 
-        $tasks = DB::table('task_properties AS tp')
-                        ->select(
-                            'tp.id', 'ts.name AS status',
-                            'u.name AS setter_name', 'u.second_name AS setter_second_name',
-                            'us.name AS responsible_name', 'us.second_name AS responsible_second_name',
-                            't_pri.name AS priorities',
-                            'tp.title', 'tp.body', 'tp.deadline', 'tp.factline', 'tp.created_at', 'tp.updated_at'
-                        )
-                        ->join('task_statuses AS ts', 'ts.id', '=', 'tp.status')
-                        ->join('task_priorities AS t_pri', 't_pri.id', '=', 'tp.priorities')
-                        ->join('users AS u', 'u.id', '=', 'tp.setter')
-                        ->join('users AS us', 'us.id', '=', 'tp.responsible')
-                        ->get();
+        $tasks = TaskProperties::tasksAll ( LIMIT );
+        $pagination = TaskProperties::pagination ( LIMIT );
 
-        return view('task.index', compact('tasks'));
+        return view('task.index', compact('tasks', 'pagination'));
 
     }
 
@@ -89,19 +80,7 @@ class TaskController extends Controller
         $TaskProperties->save();
 
 
-        $tasks = DB::table('task_properties AS tp')
-                        ->select(
-                            'tp.id', 'ts.name AS status',
-                            'u.name AS setter_name', 'u.second_name AS setter_second_name',
-                            'us.name AS responsible_name', 'us.second_name AS responsible_second_name',
-                            't_pri.name AS priorities',
-                            'tp.title', 'tp.body', 'tp.deadline', 'tp.factline', 'tp.created_at', 'tp.updated_at'
-                        )
-                        ->join('task_statuses AS ts', 'ts.id', '=', 'tp.status')
-                        ->join('task_priorities AS t_pri', 't_pri.id', '=', 'tp.priorities')
-                        ->join('users AS u', 'u.id', '=', 'tp.setter')
-                        ->join('users AS us', 'us.id', '=', 'tp.responsible')
-                        ->get();
+        $tasks = TaskProperties::tasksAll( LIMIT );
 
         return view('task.index', compact('tasks'));
 
@@ -113,9 +92,14 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show ( $id )
     {
-        return view('task.show');
+        $task = TaskProperties::task( $id );
+
+        $task = $task[0];
+
+        return view('task.show', compact('task'));
+
     }
 
     /**
@@ -124,9 +108,17 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit ( $id )
     {
-        //
+        $task = TaskProperties::task( $id );
+        $users = User::All();
+        $priorities = TaskPriority::All();
+        $statuses = TaskStatus::All();
+
+        $task = $task[0];
+
+        return view('task.edit', compact('task', 'priorities', 'statuses', 'users'));
+
     }
 
     /**
@@ -138,7 +130,32 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $this->validate( $request, [
+            'status' => 'required|integer',
+            'responsible' => 'required|integer',
+            'title' => 'required|min:10|max:255',
+            'body' => 'required',
+            'priorities' => 'required|integer',
+        ]);
+
+        $TaskProperties = TaskProperties::find($id);
+
+        $TaskProperties->status = $request->input('status');
+        $TaskProperties->responsible  = $request->input('responsible');
+        $TaskProperties->title = $request->input('title');
+        $TaskProperties->body = $request->input('body');
+        $TaskProperties->priorities  = $request->input('priorities');
+
+        $TaskProperties->save();
+
+        $tasks = TaskProperties::tasksAll( LIMIT );
+
+        $pagination = TaskProperties::pagination ( LIMIT );
+
+        //return redirect('/task');
+        return view('task.index', compact('tasks', 'pagination'));
+
     }
 
     /**
@@ -147,8 +164,14 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy ( $id )
     {
-        //
+        $task = TaskProperties::find ( $id );
+        $task->delete();
+
+        $users = User::All();
+        $priorities = TaskPriority::All();
+
+        return view('task.create', compact('users', 'priorities'));
     }
 }

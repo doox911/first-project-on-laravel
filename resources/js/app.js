@@ -34,3 +34,4 @@ require('./bootstrap');
 
 
 require('./user.js');
+require('./task.js');
