@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTasksStatusTable extends Migration
+class CreateTaskPrioritiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateTasksStatusTable extends Migration
      */
     public function up()
     {
-        Schema::create('tasks_status', function (Blueprint $table) {
+        Schema::create('task_priorities', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -26,6 +27,6 @@ class CreateTasksStatusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tasks_status');
+        Schema::dropIfExists('task_priorities');
     }
 }

@@ -1,3 +1,6 @@
+//-------------------
+// -------- USER ----
+//-------------------
 $('body').on('click', '.btn-change-login', function () {
     const login = $('input[name="login"]').val(),
           id = $(this).attr('data-user');
@@ -127,3 +130,7 @@ $('body').on('click', '.generate-password', function (e) {
     $('input[name="password_confirmation"]').prop('type', 'text').val(newPassword);
 
 });
+
+//-------------------
+// -------- task ----
+//-------------------
