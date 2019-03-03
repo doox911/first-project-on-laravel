@@ -11,6 +11,10 @@
 
                 <div class="card-body">
 
+                    <form action="/tasks/{{ $task->id }}" method="post">
+
+                        @method('PUT')
+                        @csrf
 
                         <div class="form-group">
                             <label for="time">Заголовок: </label>
@@ -29,8 +33,8 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="statuses">Статус: </label>
-                            <select class="form-control" name="statuses" id="statuses" required>
+                            <label for="status">Статус: </label>
+                            <select class="form-control" name="status" id="status" required>
                             @foreach ($statuses as $status)
                                 <option value="{{ $status->id }}">{{ $status->name }}</option>
                             @endforeach
@@ -46,6 +50,8 @@
                         </div>
 
                         <button type="submit" name="change" class="btn btn-secondary" data-task="{{ $task->id }}">Изменить</button>
+
+                    </form>
 
                 </div>
             </div>

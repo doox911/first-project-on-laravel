@@ -32,7 +32,7 @@ Route::post( '/updatesignature', 'UserController@updatesignature');
 * Tasks -->*
 **********/
 
-Route::resource('task', 'TaskController');
+Route::resource('tasks', 'TaskController');
 
 /**********
 *<-- Tasks *

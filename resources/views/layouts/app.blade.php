@@ -42,8 +42,8 @@
                                Задачи
                            </a>
                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                               <a class="dropdown-item" href="{{ route('task.create') }}">Добавить</a>
-                               <a class="dropdown-item" href="{{ route('task.index') }}">Список</a>
+                               <a class="dropdown-item" href="{{ route('tasks.create') }}">Добавить</a>
+                               <a class="dropdown-item" href="{{ route('tasks.index') }}">Список</a>
                            </div>
                          </li>
                         @endguest

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-const LIMIT = 3;
+const LIMIT = 10;
 
 use Illuminate\Http\Request;
 use App\User;
@@ -11,6 +11,7 @@ use App\TaskPriority;
 use App\TaskContent;
 use App\TaskStatus;
 use Illuminate\Support\Facades\DB;
+use App\TasksFilters;
 
 class TaskController extends Controller
 {
@@ -25,12 +26,13 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index( Request $request ) {
 
-        $tasks = TaskProperties::tasksAll ( LIMIT );
-        $pagination = TaskProperties::pagination ( LIMIT );
+        $tasks = TaskProperties::with('user');
 
-        return view('task.index', compact('tasks', 'pagination'));
+        $tasks = ( new TasksFilters($tasks, $request) )->applay()->paginate( LIMIT );
+
+        return view('tasks.index', compact('tasks'));
 
     }
 
@@ -44,7 +46,7 @@ class TaskController extends Controller
         $users = User::All();
         $priorities = TaskPriority::All();
 
-        return view('task.create', compact('users', 'priorities'));
+        return view('tasks.create', compact('users', 'priorities'));
     }
 
     /**
@@ -79,10 +81,9 @@ class TaskController extends Controller
 
         $TaskProperties->save();
 
+        $tasks = TaskProperties::paginate ( LIMIT );
 
-        $tasks = TaskProperties::tasksAll( LIMIT );
-
-        return view('task.index', compact('tasks'));
+        return view('tasks.index', compact('tasks'));
 
     }
 
@@ -94,11 +95,10 @@ class TaskController extends Controller
      */
     public function show ( $id )
     {
-        $task = TaskProperties::task( $id );
 
-        $task = $task[0];
+        $task = ( TaskProperties::task( $id ) ) [0];
 
-        return view('task.show', compact('task'));
+        return view('tasks.show', compact( 'task'));
 
     }
 
@@ -110,14 +110,12 @@ class TaskController extends Controller
      */
     public function edit ( $id )
     {
-        $task = TaskProperties::task( $id );
+        $task = ( TaskProperties::task( $id ) ) [0];
         $users = User::All();
         $priorities = TaskPriority::All();
         $statuses = TaskStatus::All();
 
-        $task = $task[0];
-
-        return view('task.edit', compact('task', 'priorities', 'statuses', 'users'));
+        return view('tasks.edit', compact('task', 'priorities', 'statuses', 'users'));
 
     }
 
@@ -149,12 +147,7 @@ class TaskController extends Controller
 
         $TaskProperties->save();
 
-        $tasks = TaskProperties::tasksAll( LIMIT );
-
-        $pagination = TaskProperties::pagination ( LIMIT );
-
-        //return redirect('/task');
-        return view('task.index', compact('tasks', 'pagination'));
+        return redirect()->route('tasks.index');
 
     }
 
@@ -172,6 +165,6 @@ class TaskController extends Controller
         $users = User::All();
         $priorities = TaskPriority::All();
 
-        return view('task.create', compact('users', 'priorities'));
+        return view('tasks.create', compact('users', 'priorities'));
     }
 }

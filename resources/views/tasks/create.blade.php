@@ -20,7 +20,7 @@
                       </div>
                     @endif
 
-                    <form action="{{ route('task.store') }}" method="post">
+                    <form action="{{ route('tasks.store') }}" method="post">
                         @csrf
                         <div class="form-group">
                             <label for="setter">Постановщик</label>
