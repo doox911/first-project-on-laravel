@@ -13,9 +13,14 @@ class TaskProperties extends Model {
 
     }
 
-    public function user() {
+    public function user_setter() {
 
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'setter', 'id');
+
+    }
+    public function user_responsible() {
+
+        return $this->belongsTo('App\User', 'responsible', 'id');
 
     }
 

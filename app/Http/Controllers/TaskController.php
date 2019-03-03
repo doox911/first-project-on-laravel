@@ -28,11 +28,14 @@ class TaskController extends Controller
      */
     public function index( Request $request ) {
 
-        $tasks = TaskProperties::with('user');
+        $tasks = TaskProperties::with('user_setter', 'user_responsible');
 
         $tasks = ( new TasksFilters($tasks, $request) )->applay()->paginate( LIMIT );
 
-        return view('tasks.index', compact('tasks'));
+        $statuses = TaskStatus::All();
+        $priorities = TaskPriority::All();
+
+        return view('tasks.index', compact('tasks', 'statuses', 'priorities'));
 
     }
 
@@ -164,7 +167,6 @@ class TaskController extends Controller
 
         $users = User::All();
         $priorities = TaskPriority::All();
-
-        return view('tasks.create', compact('users', 'priorities'));
+        
     }
 }

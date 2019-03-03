@@ -23,7 +23,7 @@ Route::post( '/updateemail', 'UserController@updateemail');
 Route::post( '/updatefoto', 'UserController@updatefoto');
 Route::post( '/removefoto', 'UserController@removefoto');
 Route::post( '/updatesignature', 'UserController@updatesignature');
-
+Route::delete( 'user/{user}', 'UserController@destroy')->name('user.destroy');
 
 /**********
 *<-- POST *

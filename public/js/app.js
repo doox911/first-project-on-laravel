@@ -37194,6 +37194,19 @@ $('body').on('click', '.personal-foto-remove', function () {
     });
   }
 });
+$('body').on('click', '#delete-profile', function () {
+  var id = $(this).attr('data-user');
+
+  if (confirm('ВНИМАНИЕ! Аккаунт будет безвозвратно удалён!')) {
+    $.ajax({
+      url: "/user/".concat(id),
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      type: 'DELETE'
+    });
+  }
+});
 $('body').on('click', '.generate-password', function (e) {
   e.preventDefault();
   var newPassword = randomize('Aa0', 8);

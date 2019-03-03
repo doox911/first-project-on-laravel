@@ -45,37 +45,46 @@ class TasksFilters
 
     # Фильтр по Постановщику задачи
 
-    public function setter ( int $id )
+    public function setter ( $value )
     {
+        if ( empty ( $value ) ) return;
+        $this->bilder->whereHas( 'user_setter', function($query) use ($value){
+             $query->Where( 'name', 'LIKE', "%$value%" )
+             ->orWhere( 'second_name', 'LIKE', "%$value%")
+             ->orWhere( 'patronumic', 'LIKE', "%$value%" );
+        });
 
-        $this->bilder=$this->bilder->where( 'setter', '=', $id );
+
 
     }
 
     # Фильтр по ответственному за задачу
 
-    public function responsible ( int $id )
+    public function responsible ( $value )
     {
-
-        $this->bilder=$this->bilder->where( 'responsible', '=', $id );
-
+        if ( empty ( $value ) ) return;
+        $this->bilder->whereHas( 'user_responsible', function($query) use ($value){
+             $query->Where( 'name', 'LIKE', "%$value%" )
+             ->orWhere( 'second_name', 'LIKE', "%$value%")
+             ->orWhere( 'patronumic', 'LIKE', "%$value%" );
+        });
     }
 
     # Фильтр по статусу задачи
 
-    public function status ( int $id )
+    public function status ( $id )
     {
-
-        $this->bilder=$this->bilder->where( 'status', '=', $id );
+        if ( empty ( $id ) ) return;
+        $this->bilder->where( 'status', '=', $id );
 
     }
 
     # Фильтр по приоритету задачи
 
-    public function priority ( int $id )
+    public function priority ( $id )
     {
-
-        $this->bilder=$this->bilder->where( 'priority', '=', $id );
+        if ( empty ( $id ) ) return;
+        $this->bilder->where( 'priorities', '=', $id );
 
     }
 }
