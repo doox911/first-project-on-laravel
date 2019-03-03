@@ -125,10 +125,9 @@ class UserController extends Controller
         return Response::json($user->signature);
     }
 
-    public function destroy( $id )
+    public function destroy(User $user)
     {
-        $task = User::find ( $id );
-        $task->delete();
+        $user->delete();
     }
 
 }

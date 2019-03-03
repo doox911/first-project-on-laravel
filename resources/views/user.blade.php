@@ -76,7 +76,7 @@
                     </div>
                 </div>
                 <div class="person-app">
-                    <button id="delete-profile" type="button" class="btn btn-danger border-0">Удалить Аккаунт</button>
+                    <button id="delete-profile" type="button" class="btn btn-danger border-0" data-user={{ Auth::user()->id }}>Удалить Аккаунт</button>
                 </div>
             </div>
         </div>
