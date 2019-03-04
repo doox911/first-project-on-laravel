@@ -37,10 +37,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function taskProperties()
+    public function tasks()
     {
 
-        return $this->hasOne('App\TaskProperties');
+        return $this->hasOne('App\TaskProperties', 'task_id', 'id');
 
     }
+
 }

@@ -37203,7 +37203,10 @@ $('body').on('click', '#delete-profile', function () {
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
-      type: 'DELETE'
+      type: 'DELETE',
+      success: function success(data) {
+        $('#delete-profile').after('<div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">' + data + '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' + '<span aria-hidden="true">&times;</span>' + '</button>' + '</div>');
+      }
     });
   }
 });

@@ -84,9 +84,7 @@ class TaskController extends Controller
 
         $TaskProperties->save();
 
-        $tasks = TaskProperties::paginate ( LIMIT );
-
-        return view('tasks.index', compact('tasks'));
+        return redirect()->route('tasks.index');
 
     }
 
@@ -167,6 +165,6 @@ class TaskController extends Controller
 
         $users = User::All();
         $priorities = TaskPriority::All();
-        
+
     }
 }

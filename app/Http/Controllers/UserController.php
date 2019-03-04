@@ -7,6 +7,7 @@ use App;
 use Response;
 use App\User;
 use \Gumlet\ImageResize;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -127,7 +128,13 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        $tasks = DB::table('task_properties')->where('setter','=',$user->id)->orWhere('responsible','=',$user->id)->count();
+
+        if ( ! $tasks === 0 ) return 'У вас есть не законченные задачи!';
+
         $user->delete();
+
+        return redirect()->route('tasks.index');
     }
 
 }

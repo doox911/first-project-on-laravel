@@ -14,7 +14,17 @@ class CreateUser extends Seeder
         DB::table('users')->insert([
             'name' => 'Андрей',
             'email' => 'doox911@yandex.ru',
-            'password' => Hash::make('Loko4273'),
+            'password' => Hash::make('1234'),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Николай',
+            'email' => 'test1@yandex.ru',
+            'password' => Hash::make('1234'),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Иван',
+            'email' => 'test2@yandex.ru',
+            'password' => Hash::make('1234'),
         ]);
     }
 }
